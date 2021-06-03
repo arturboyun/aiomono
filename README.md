@@ -44,7 +44,7 @@ async def main():
     try:
         mono_client = PersonalMonoClient(MONOBANK_API_TOKEN)
         client_info = await mono_client.client_info()
-        print(f'User {client_info.name} syccessfuly authorized😍')
+        print(f'User name {client_info.name} 😍')
     finally:
         await mono_client.close()
 
