@@ -8,8 +8,6 @@ The **aiomono** is fully asynchronous library for [Monobank API](https://api.mon
 - Install the **latest version** of the **aiomono**: `pip install aiomono`
 
 ## Examples
-<details>
-    <summary>Click here to see examples📖</summary>
 
 **We have 3 different classes for use Monobank API:**
 - `MonoClient` is simple base class for others, can only get currencies
@@ -52,7 +50,6 @@ async def main():
 
 asyncio.run(main())
 ```
-</details>
 
 ### Resources:
 `# TODO`
