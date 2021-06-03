@@ -148,3 +148,6 @@ Thumbs.db
 # ides
 .idea/
 .vscode/
+
+# others
+test.py

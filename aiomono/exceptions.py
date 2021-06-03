@@ -1,0 +1,6 @@
+class MonoException(Exception):
+    ...
+
+
+class MonoPeriodException(Exception):
+    ...
