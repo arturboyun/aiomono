@@ -1,10 +1,20 @@
 [tool.poetry]
 name = "aiomono"
-version = "1.0.0"
+version = "1.0.1"
 description = "The asynchronous library for monobank API"
 authors = ["Archie <arturboyun@gmail.com>"]
 license = "MIT"
 repository = "https://github.com/archiesir/aiomono"
+homepage = "https://github.com/archiesir/aiomono"
+readme = 'README.md'
+keywords = [
+    "monobank",
+    "client",
+    "api",
+    "library",
+    "aiohttp",
+    "asyncio",
+]
 
 [tool.poetry.dependencies]
 python = "^3.7"

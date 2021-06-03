@@ -1,11 +1,11 @@
 import logging
 from datetime import datetime, timezone, timedelta
-from typing import List, Union, Dict, Optional
+from typing import List, Union, Dict, Optional, Any
 
 import aiohttp
 from aiohttp import ClientResponse
 
-from aiomono.exceptions import MonoException, MonoPeriodException
+from aiomono.exceptions import MonoException, ToManyRequests
 from aiomono.types import Currency, ClientInfo, StatementItem
 from aiomono.utils import validate_token
 
@@ -29,17 +29,19 @@ class MonoClient:
         logger.debug(f'({response.status}) Response: '
                      f'{await response.text()}, {await response.json()}, {response.headers}')
         if not response.ok:
+            if response.status == 249:
+                raise ToManyRequests(await response.text())
             raise MonoException(await response.text())
         return await response.json()
 
-    async def __request(self, method, endpoint, **kwargs):
+    async def _request(self, method, endpoint, **kwargs) -> Any:
         return await self._check_response(await self.session.request(method, API_ENDPOINT + endpoint, **kwargs))
 
     async def _get(self, endpoint: str, **kwargs) -> Union[List, Dict]:
-        return await self.__request('GET', endpoint, **kwargs)
+        return await self._request('GET', endpoint, **kwargs)
 
     async def _post(self, endpoint: str, **kwargs) -> Union[List, Dict]:
-        return await self.__request('POST', endpoint, **kwargs)
+        return await self._request('POST', endpoint, **kwargs)
 
     @property
     def session(self) -> aiohttp.ClientSession:

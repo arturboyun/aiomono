@@ -2,5 +2,5 @@ class MonoException(Exception):
     ...
 
 
-class MonoPeriodException(Exception):
+class ToManyRequests(MonoException):
     ...
