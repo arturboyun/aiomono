@@ -4,6 +4,7 @@ version = "1.0.0"
 description = "The asynchronous library for monobank API"
 authors = ["Archie <arturboyun@gmail.com>"]
 license = "MIT"
+repository = "https://github.com/archiesir/aiomono"
 
 [tool.poetry.dependencies]
 python = "^3.7"
