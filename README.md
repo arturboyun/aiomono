@@ -37,7 +37,7 @@ asyncio.run(main())
 import asyncio
 from aiomono import PersonalMonoClient
 
-MONOBANK_API_TOKEN = 'uXZquoEm6P4aGVnJeJjVrujvbKmd_GHXxF5LEgcsM8mE'
+MONOBANK_API_TOKEN = 'your token'
 
 
 async def main():
