@@ -1,6 +1,6 @@
 # AIOMono (Alpha)
 
-The **aiomono** is fully asynchronous library for [Monobank API](https://api.monobank.ua/docs) written in Python 3.7 with [asyncio](https://docs.python.org/3/library/asyncio.html), [aiohttp](https://github.com/aio-libs/aiohttp) and [pydantic](https://pydantic-docs.helpmanual.io/).
+The **aiomono** is fully asynchronous library for [Monobank API](https://api.monobank.ua/docs) written in Python 3.8 with [asyncio](https://docs.python.org/3/library/asyncio.html), [aiohttp](https://github.com/aio-libs/aiohttp) and [pydantic](https://pydantic-docs.helpmanual.io/).
 
 
 ## Setup
@@ -12,7 +12,7 @@ The **aiomono** is fully asynchronous library for [Monobank API](https://api.mon
 **We have 3 different classes for use Monobank API:**
 - `MonoClient` is simple base class for others, can only get currencies
 - `PersonalMonoClient` - this class for talk to personal Monobank API
-- ~~`CorporateMonoClient` - this class for talk to corporate Monobank API~~ (not realized)
+- ~~`CorporateMonoClient` - this class for talk to corporate Monobank API~~ (soon)
 
 
 ### Simple [get_currency](https://api.monobank.ua/docs/#operation--bank-currency-get) request
