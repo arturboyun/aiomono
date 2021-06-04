@@ -53,7 +53,7 @@ class MonoClient:
         await self._session.close()
 
     def __enter__(self):
-        raise RuntimeError('Use "async with" instead simple "with" context manager')
+        raise RuntimeError('Use "async with" instead of simple "with" context manager')
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         pass
@@ -68,11 +68,12 @@ class MonoClient:
 
 class PersonalMonoClient(MonoClient):
     def __init__(self, token: str):
-        self.__token = token
-        self.__headers = {'X-Token': self.__token}
         super().__init__()
 
-        validate_token(token)
+        self.__token = token
+        self.__headers = {'X-Token': self.__token}
+
+        validate_token(self.__token)
 
     async def client_info(self) -> ClientInfo:
         """Returns client info"""
@@ -91,6 +92,7 @@ class PersonalMonoClient(MonoClient):
             date_from: datetime = datetime.now(timezone.utc) - timedelta(days=31, hours=1),
             date_to: datetime = datetime.now(timezone.utc),
     ):
+        """Returns list of statement items"""
         date_from = int(date_from.replace(tzinfo=timezone.utc).timestamp())
         date_to = int(date_to.replace(tzinfo=timezone.utc).timestamp())
         endpoint = f'/personal/statement/{account_id}/{date_from}/{date_to}'
