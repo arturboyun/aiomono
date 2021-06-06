@@ -7,6 +7,7 @@ The **aiomono** is fully asynchronous library for [Monobank API](https://api.mon
 - You get token for your client from [MonobankAPI](https://api.monobank.ua/).
 - Install the **latest version** of the **aiomono**: `pip install aiomono`
 
+
 ## Examples
 
 **We have 3 different classes for use Monobank API:**
@@ -31,6 +32,7 @@ async def main():
 asyncio.run(main())
 ```
 
+
 ### [client_info](https://api.monobank.ua/docs/#operation--personal-client-info-get) request
 
 ```python
@@ -51,5 +53,8 @@ async def main():
 asyncio.run(main())
 ```
 
-### Resources:
-`# TODO`
+
+## Resources:
+- Community: [@aiomono](https://t.me/aiomono)
+- PyPI: [aiomono](https://pypi.org/project/aiomono)
+- Documentation: (soon)
