@@ -6,8 +6,9 @@ import aiohttp
 from aiohttp import ClientResponse
 
 from aiomono.exceptions import MonoException, ToManyRequests
+from aiomono.signature import SignKey
 from aiomono.types import Currency, ClientInfo, StatementItem
-from aiomono.utils import validate_token
+from aiomono.utils import validate_token, to_timestamp
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('mono')
@@ -70,20 +71,20 @@ class PersonalMonoClient(MonoClient):
     def __init__(self, token: str):
         super().__init__()
 
-        self.__token = token
-        self.__headers = {'X-Token': self.__token}
+        self.token = token
+        self._headers = {'X-Token': self.token}
 
-        validate_token(self.__token)
+        validate_token(self.token)
 
     async def client_info(self) -> ClientInfo:
         """Returns client info"""
-        client_info = await self._get('/personal/client-info', headers=self.__headers)
+        client_info = await self._get('/personal/client-info', headers=self._headers)
         return ClientInfo(**client_info)
 
     async def set_webhook(self, webhook_url: str) -> bool:
         """Setting new webhook url"""
         payload = {"webHookUrl": webhook_url}
-        response = await self._post('/personal/webhook', json=payload, headers=self.__headers)
+        response = await self._post('/personal/webhook', json=payload, headers=self._headers)
         return True
 
     async def get_statement(
@@ -93,12 +94,36 @@ class PersonalMonoClient(MonoClient):
             date_to: datetime = datetime.now(timezone.utc),
     ):
         """Returns list of statement items"""
-        date_from = int(date_from.replace(tzinfo=timezone.utc).timestamp())
-        date_to = int(date_to.replace(tzinfo=timezone.utc).timestamp())
-        endpoint = f'/personal/statement/{account_id}/{date_from}/{date_to}'
-        statement_items = await self._get(endpoint, headers=self.__headers)
+        timestamp_from = to_timestamp(date_from)
+        timestamp_to = to_timestamp(date_to)
+        endpoint = f'/personal/statement/{account_id}/{timestamp_from}/{timestamp_to}'
+        statement_items = await self._get(endpoint, headers=self._headers)
         return [StatementItem(**statement_item) for statement_item in statement_items]
 
 
 class CorporateMonoClient(MonoClient):
-    ...
+    def __init__(self, request_id, private_key: str):
+        super().__init__()
+
+        self.request_id = request_id
+        self.sign_key = SignKey(private_key)
+        self._headers = {
+            "X-Key-Id": self.sign_key.key_id(),
+            "X-Time": to_timestamp(datetime.now()),
+            "X-Request-Id": self.request_id,
+        }
+
+    def access_request(self, permissions: str = 'sp', callback_url: str = None):
+        """Creates an access request for Corporate Monobank API user"""
+        if 's' or 'p' in permissions:
+
+        headers = {
+            "X-Key-Id": self.sign_key.key_id(),
+            "X-Time": to_timestamp(datetime.now()),
+            "X-Permissions": permissions,
+        }
+        if callback_url:
+            headers["X-Callback"] = callback_url
+        sign_str = headers["X-Time"] + headers["X-Permissions"] + path
+        headers["X-Sign"] = self.sign_key.sign(sign_str)
+        return self._post('/personal/auth/request', headers=headers)
